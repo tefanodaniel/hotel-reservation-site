@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HotelInterface } from './hotel-interface';
+import { NewHotelInterface } from './new-hotel-interface';
+
 
 @Injectable({
   providedIn: 'root'
@@ -7,6 +9,8 @@ import { HotelInterface } from './hotel-interface';
 export class HotelService {
 
     readonly baseUrl = 'https://angular.dev/assets/images/tutorials/common';
+
+    dataUrl = 'http://localhost:8080/hotels';
 
     hotelOptionList: HotelInterface[] = [
         {
@@ -75,11 +79,64 @@ export class HotelService {
         }
     ]
 
+    newHotelOptionListLocal: NewHotelInterface[] = [
+        {
+            hotel_id: 4,
+            hotel_name: "Ramses Hilton Hotel",
+            hotel_city: "Cairo",
+            hotel_stars: "5",
+            hotel_location: "https://goo.gl/maps/LEy98S7EHX5mcnQZ6",
+            hotel_distance: "50",
+            hotel_phone: "01129348206",
+            hotel_price_min: "100",
+            hotel_price_max: "500",
+            hotel_avg_rate: "300",
+            hotel_availability: "All week"
+        },
+        {
+            hotel_id: 5,
+            hotel_name: "The Luxury Collection Hotels & Resorts.",
+            hotel_city: "Giza",
+            hotel_stars: "4",
+            hotel_location:	"https://goo.gl/maps/LEy98S7EHX5mcnQZ6",
+            hotel_distance:	"150",
+            hotel_phone: "01129348206",
+            hotel_price_min: "250",
+            hotel_price_max: "1000",
+            hotel_avg_rate: "625",
+            hotel_availability:	"From Sat to Thr"
+        },
+        {
+            hotel_id: 6,
+            hotel_name: "Rosewood Hotels & Resorts.",
+            hotel_city: "Cairo",
+            hotel_stars: "5",
+            hotel_location: "https://goo.gl/maps/LEy98S7EHX5mcnQZ6",
+            hotel_distance: "100",
+            hotel_phone: "01129348206",
+            hotel_price_min: "150",
+            hotel_price_max: "800",
+            hotel_avg_rate: "475",
+            hotel_availability: "All week"
+        }
+    ]
+
     getAllHotelOptions(): HotelInterface[] {
         return this.hotelOptionList;
     }
 
     getHotelOptionById(id: number): HotelInterface | undefined {
         return this.hotelOptionList.find((hotelOption) => hotelOption.id === id)
+    }
+
+    async getAllNewHotelOptions(): Promise<NewHotelInterface[]> {
+        const data = await fetch(this.dataUrl);
+        return (await data.json()) ?? [];
+    }
+
+    async getNewHotelOptionById(id: number): Promise<NewHotelInterface | undefined> {
+        const data = await fetch(`${this.dataUrl}?id=${id}`);
+        const hotelJson = await data.json();
+        return hotelJson[0] ?? {};
     }
 }

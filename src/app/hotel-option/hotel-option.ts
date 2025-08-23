@@ -1,25 +1,28 @@
 import { Component, input } from '@angular/core';
 import { HotelInterface } from '../hotel-interface';
 import { RouterLink, RouterOutlet } from '@angular/router'
+import { NewHotelInterface } from '../new-hotel-interface';
 
 @Component({
   selector: 'app-hotel-option',
   imports: [ RouterLink, RouterOutlet],
   template: `
     <section class="hotel">
-        <img
+        
+        <!--> <img
         class="hotel-photo"
         [src]="hotelOption().photo"
         alt="Exterior photo of {{ hotelOption().name }}"
         crossorigin
-        />
-        <h2 class="hotel-heading">{{ hotelOption().name }}</h2>
-        <p class="hotel-location">{{ hotelOption().city }}, {{ hotelOption().state }}</p>
-        <a [routerLink]="['/details', hotelOption().id]">Learn More</a>
+        /> -->
+
+        <h2 class="hotel-heading">{{ hotelOption().hotel_name }}</h2>
+        <p class="hotel-location">{{ hotelOption().hotel_city}}, {{ hotelOption().hotel_distance }} km away</p>
+        <a [routerLink]="['/details', hotelOption().hotel_id]">Learn More</a>
     </section>
    `,
   styleUrls: [ './hotel-option.css']
 })
 export class HotelOption {
-    hotelOption = input.required<HotelInterface>();
+    hotelOption = input.required<NewHotelInterface>();
 }

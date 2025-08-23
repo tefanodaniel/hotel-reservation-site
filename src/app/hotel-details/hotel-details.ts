@@ -3,6 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { HotelInterface } from '../hotel-interface';
 import { HotelService } from '../hotel-service';
+import { NewHotelInterface } from '../new-hotel-interface';
 import { ReservationService } from '../reservation-service';
 
 @Component({
@@ -10,22 +11,28 @@ import { ReservationService } from '../reservation-service';
   imports: [ ReactiveFormsModule ],
   template: `
     <article>
+      
+    <!-->
       <img
         class="hotel-photo"
         [src]="hotelOption?.photo"
         alt="Exterior photo of {{ hotelOption?.name }}"
         crossorigin
-      />
+      /> 
+      -->
+      
       <section class="hotel-description">
-        <h2 class="hotel-heading">{{ hotelOption?.name }}</h2>
-        <p class="hotel-location">{{ hotelOption?.city }}, {{ hotelOption?.state }}</p>
+        <h2 class="hotel-heading">{{ hotelOption?.hotel_name }}</h2>
+        <p class="hotel-location">{{ hotelOption?.hotel_city }}, {{ hotelOption?.hotel_distance }} km away</p>
       </section>
       <section class="hotel-features">
         <h2 class="section-heading">About this hotel option</h2>
         <ul>
-          <li>Units available: {{ hotelOption?.availableUnits }}</li>
-          <li>Does this hotel have wifi: {{ hotelOption?.wifi }}</li>
-          <li>Does this hotel have laundry: {{ hotelOption?.laundry }}</li>
+          <li>Rating: {{ hotelOption?.hotel_stars }} / 5 based on X reviews.</li>
+          <li>Average rate: {{ hotelOption?.hotel_avg_rate }} </li>
+          <li>All rates: {{ hotelOption?.hotel_price_min }} - {{ hotelOption?.hotel_price_max }}</li>
+          <li>Phone number: {{ hotelOption?.hotel_phone}}</li>
+          <li>Availability: {{ hotelOption?.hotel_availability}}</li>
         </ul>
       </section>
       <section class="reservation-form">
@@ -48,7 +55,7 @@ export class HotelDetails {
     route: ActivatedRoute = inject(ActivatedRoute);
     hotelService = inject(HotelService);
     reservationService = inject(ReservationService);
-    hotelOption: HotelInterface | undefined;
+    hotelOption: NewHotelInterface | undefined;
 
     reservationForm = new FormGroup({
         firstName: new FormControl(''),
@@ -58,7 +65,10 @@ export class HotelDetails {
 
     constructor() {
         const hotelId = Number(this.route.snapshot.params['id']);
-        this.hotelOption = this.hotelService.getHotelOptionById(hotelId);
+        this.hotelService.getNewHotelOptionById(hotelId)
+            .then((hotelOption: NewHotelInterface | undefined ) => {
+                this.hotelOption = hotelOption;
+            });
     }
 
     submitReservation() {

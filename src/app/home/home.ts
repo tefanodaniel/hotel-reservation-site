@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { HotelOption } from '../hotel-option/hotel-option';
 import { HotelInterface } from '../hotel-interface';
 import { HotelService } from '../hotel-service';
+import { NewHotelInterface } from '../new-hotel-interface';
 
 @Component({
   selector: 'app-home',
@@ -23,13 +24,16 @@ import { HotelService } from '../hotel-service';
 })
 export class Home {
 
-    hotelOptionList: HotelInterface[] = [];
-    filteredHotelOptionList: HotelInterface[] = [];
+    hotelOptionList: NewHotelInterface[] = [];
+    filteredHotelOptionList: NewHotelInterface[] = [];
     hotelService: HotelService = inject(HotelService);
 
     constructor() {
-        this.hotelOptionList = this.hotelService.getAllHotelOptions();
-        this.filteredHotelOptionList = this.hotelOptionList;
+        this.hotelService.getAllNewHotelOptions()
+            .then((hotelOptionList: NewHotelInterface[]) => {
+                this.hotelOptionList = hotelOptionList;
+                this.filteredHotelOptionList = hotelOptionList;
+            });
     }
 
     filterResults(text: string) {
@@ -40,7 +44,7 @@ export class Home {
         }
 
         this.filteredHotelOptionList = this.hotelOptionList.filter((hotelOption) =>
-            hotelOption?.city.toLowerCase().includes(text.toLowerCase())
+            hotelOption?.hotel_location.toLowerCase().includes(text.toLowerCase())
         );
 
     }

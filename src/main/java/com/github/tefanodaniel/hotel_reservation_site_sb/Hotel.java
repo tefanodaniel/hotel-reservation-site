@@ -45,17 +45,21 @@ public class Hotel {
     
     @Column(name="hotel_availability")
     String hotel_availability;
+    
+    @Column(name="hotel_city")
+    String hotel_city;
 
-    public Hotel(int hotel_id, String hotel_name, String hotel_stars, String hotel_location, String hotel_distance, String hotel_phone, String hotel_price_min, String hotel_price_max, String hotel_availability) {
+    public Hotel(int hotel_id, String hotel_name, String hotel_stars, String hotel_location, String hotel_distance, String hotel_phone, String hotel_price_min, String hotel_price_max, String hotel_availability, String hotel_city) {
         this.hotel_id = hotel_id;
         this.hotel_name = hotel_name;
-        this.hotel_stars = hotel_stars;
-        this.hotel_location = hotel_location;
+        this.hotel_city = hotel_city;
         this.hotel_distance = hotel_distance;
         this.hotel_phone = hotel_phone;
+        this.hotel_location = hotel_location;
         this.hotel_price_min = hotel_price_min;
         this.hotel_price_max = hotel_price_max;
         this.hotel_availability = hotel_availability;
+        this.hotel_stars = hotel_stars;
     }
     
     public Hotel() {}
@@ -131,4 +135,12 @@ public class Hotel {
     public void setHotel_availability(String hotel_availability) {
         this.hotel_availability = hotel_availability;
     }   
+    
+    public String getHotel_city() {
+        return hotel_city;
+    }
+
+    public void setHotel_city(String hotel_city) {
+        this.hotel_city = hotel_city;
+    }
 }

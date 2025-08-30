@@ -22,15 +22,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class HotelController {
    
     private final HotelRepository repository;
+    private final ReviewRepository review_repository;
 
-    public HotelController(HotelRepository repository) {
+    public HotelController(HotelRepository repository, ReviewRepository review_repository) {
         this.repository = repository;
+        this.review_repository = review_repository;
     }
     
     @PostMapping
     public Hotel createHotel(@Valid @RequestBody Hotel hotel) {
-        
-        // TODO: Calculate average star rating of hotel
         return repository.save(hotel);
     }
     
@@ -41,7 +41,10 @@ public class HotelController {
     
     @GetMapping("/{id}")
     public Hotel getHotelById(@PathVariable Long id) {
-        return repository.findById(id).orElseThrow(() -> new RuntimeException("Hotel not found"));
+        Hotel hotel = repository.findById(id).orElseThrow(() -> new RuntimeException("Hotel not found"));
+        hotel.setHotel_avg_rating(getHotelAverageRating(id));
+        repository.save(hotel);
+        return hotel;
     }
     
     @PostMapping("/{id}")
@@ -49,15 +52,31 @@ public class HotelController {
         return repository.findById(id)
                 .map( oldHotel -> {
                     oldHotel.setHotel_name(hotel.hotel_name);
-                    oldHotel.setHotel_stars(hotel.hotel_stars);
-                    oldHotel.setHotel_location(hotel.hotel_location);
+                    oldHotel.setHotel_address(hotel.hotel_address);
                     oldHotel.setHotel_distance(hotel.hotel_distance);
                     oldHotel.setHotel_phone(hotel.hotel_phone);
+                    oldHotel.setHotel_stars(hotel.hotel_stars);                    
+                    oldHotel.setHotel_avg_rating(hotel.hotel_avg_rating);
                     oldHotel.setHotel_price_min(hotel.hotel_price_min);
                     oldHotel.setHotel_price_max(hotel.hotel_price_max);
                     oldHotel.setHotel_availability(hotel.hotel_availability);
                     oldHotel.setHotel_city(hotel.hotel_city);
                     return repository.save(oldHotel);
                 }).orElseThrow(() -> new RuntimeException("Hotel not found"));
+    }
+
+    private String getHotelAverageRating(Long hotel_id) {
+       List<Review> reviews = this.review_repository.findByHotelId(hotel_id);
+       double avg_rating = 0;
+       if (!reviews.isEmpty()) {
+            for (Review r : reviews) {
+                avg_rating += r.getRating();
+            }
+            avg_rating /= reviews.size();
+       }
+       else {
+           return "no ratings yet";
+       }
+       return Double.toString(avg_rating);
     }
 }

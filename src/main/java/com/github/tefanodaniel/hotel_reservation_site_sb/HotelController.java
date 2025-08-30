@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import java.util.List;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -50,19 +51,24 @@ public class HotelController {
     @PostMapping("/{id}")
     public Hotel updateHotelById(@PathVariable Long id, @Valid @RequestBody Hotel hotel) {
         return repository.findById(id)
-                .map( oldHotel -> {
-                    oldHotel.setHotel_name(hotel.hotel_name);
-                    oldHotel.setHotel_address(hotel.hotel_address);
-                    oldHotel.setHotel_distance(hotel.hotel_distance);
-                    oldHotel.setHotel_phone(hotel.hotel_phone);
-                    oldHotel.setHotel_stars(hotel.hotel_stars);                    
-                    oldHotel.setHotel_avg_rating(hotel.hotel_avg_rating);
-                    oldHotel.setHotel_price_min(hotel.hotel_price_min);
-                    oldHotel.setHotel_price_max(hotel.hotel_price_max);
-                    oldHotel.setHotel_availability(hotel.hotel_availability);
-                    oldHotel.setHotel_city(hotel.hotel_city);
-                    return repository.save(oldHotel);
+                .map( newHotel -> {
+                    newHotel.setHotel_name(hotel.hotel_name);
+                    newHotel.setHotel_address(hotel.hotel_address);
+                    newHotel.setHotel_distance(hotel.hotel_distance);
+                    newHotel.setHotel_phone(hotel.hotel_phone);
+                    newHotel.setHotel_stars(hotel.hotel_stars);                    
+                    newHotel.setHotel_avg_rating(hotel.hotel_avg_rating);
+                    newHotel.setHotel_price_min(hotel.hotel_price_min);
+                    newHotel.setHotel_price_max(hotel.hotel_price_max);
+                    newHotel.setHotel_availability(hotel.hotel_availability);
+                    newHotel.setHotel_city(hotel.hotel_city);
+                    return repository.save(newHotel);
                 }).orElseThrow(() -> new RuntimeException("Hotel not found"));
+    }
+    
+    @DeleteMapping("/{id}")
+    public void deleteHotel(@PathVariable Long id) {
+        this.repository.deleteById(id);
     }
 
     private String getHotelAverageRating(Long hotel_id) {
@@ -79,4 +85,6 @@ public class HotelController {
        }
        return Double.toString(avg_rating);
     }
+    
+    
 }

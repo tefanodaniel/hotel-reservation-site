@@ -55,6 +55,8 @@ public class HotelController {
                     newHotel.setHotel_name(hotel.hotel_name);
                     newHotel.setHotel_address(hotel.hotel_address);
                     newHotel.setHotel_distance(hotel.hotel_distance);
+                    newHotel.setHotel_country(hotel.hotel_country);
+                    newHotel.setHotel_state(hotel.hotel_state);
                     newHotel.setHotel_phone(hotel.hotel_phone);
                     newHotel.setHotel_stars(hotel.hotel_stars);                    
                     newHotel.setHotel_avg_rating(hotel.hotel_avg_rating);

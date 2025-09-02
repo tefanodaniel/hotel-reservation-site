@@ -31,6 +31,12 @@ public class Hotel {
     @Column(name="hotel_city")
     String hotel_city;
     
+    @Column(name="hotel_country")
+    String hotel_country;
+    
+    @Column(name="hotel_state")
+    String hotel_state;
+
     @Column(name="hotel_distance")
     String hotel_distance;
     
@@ -53,11 +59,13 @@ public class Hotel {
     String hotel_availability;
     
     
-    public Hotel(Long hotel_id, String hotel_name, String hotel_address, String hotel_city, String hotel_distance, String hotel_phone, int hotel_stars, String hotel_avg_rating, int hotel_price_min, int hotel_price_max, String hotel_availability ) {
+    public Hotel(Long hotel_id, String hotel_name, String hotel_address, String hotel_city, String hotel_country, String hotel_state, String hotel_distance, String hotel_phone, int hotel_stars, String hotel_avg_rating, int hotel_price_min, int hotel_price_max, String hotel_availability ) {
         this.hotel_id = hotel_id;
         this.hotel_name = hotel_name;
-        this.hotel_city = hotel_city;
         this.hotel_address = hotel_address;
+        this.hotel_city = hotel_city;
+        this.hotel_country = hotel_country;
+        this.hotel_state = hotel_state;
         this.hotel_distance = hotel_distance;
         this.hotel_phone = hotel_phone;
         this.hotel_stars = hotel_stars;
@@ -102,6 +110,21 @@ public class Hotel {
         this.hotel_address = hotel_address;
     }
 
+    public String getHotel_country() {
+        return hotel_country;
+    }
+
+    public void setHotel_country(String hotel_country) {
+        this.hotel_country = hotel_country;
+    }
+    
+    public String getHotel_state() {
+        return hotel_state;
+    }
+
+    public void setHotel_state(String hotel_state) {
+        this.hotel_state = hotel_state;
+    }
 
     public String getHotel_distance() {
         return hotel_distance;

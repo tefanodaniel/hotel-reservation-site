@@ -3,12 +3,14 @@ import { HotelOption } from '../hotel-option/hotel-option';
 import { HotelInterface } from '../hotel-interface';
 import { HotelService } from '../hotel-service';
 import { NewHotelInterface } from '../new-hotel-interface';
+import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'app-home',
-  imports: [ HotelOption  ],
+    selector: 'app-home',
+    imports: [ HotelOption, RouterLink, RouterOutlet ],
   template: `
     <section>
+      <a [routerLink]="['/login']">Login</a>
       <form>
         <input type="text" placeholder="Filter by city" #filter />
         <button class="primary" type="button" (click)="filterResults(filter.value)">Search</button>
@@ -30,10 +32,10 @@ export class Home {
 
     constructor() {
         this.hotelService.getAllNewHotelOptions()
-            .then((hotelOptionList: NewHotelInterface[]) => {
-                this.hotelOptionList = hotelOptionList;
-                this.filteredHotelOptionList = hotelOptionList;
-            });
+                         .then((hotelOptionList: NewHotelInterface[]) => {
+                                this.hotelOptionList = hotelOptionList;
+                                this.filteredHotelOptionList = hotelOptionList;
+                         });
     }
 
     filterResults(text: string) {

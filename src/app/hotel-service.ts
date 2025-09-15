@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HotelInterface } from './hotel-interface';
 import { NewHotelInterface } from './new-hotel-interface';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -121,14 +120,6 @@ export class HotelService {
         }
     ]
 
-    getAllHotelOptions(): HotelInterface[] {
-        return this.hotelOptionList;
-    }
-
-    getHotelOptionById(id: number): HotelInterface | undefined {
-        return this.hotelOptionList.find((hotelOption) => hotelOption.id === id)
-    }
-
     async getAllNewHotelOptions(): Promise<NewHotelInterface[]> {
         const data = await fetch(this.dataUrl);
         return (await data.json()) ?? [];
@@ -138,5 +129,13 @@ export class HotelService {
         const data = await fetch(`${this.dataUrl}?id=${id}`);
         const hotelJson = await data.json();
         return hotelJson[0] ?? {};
+    }
+
+    getAllHotelOptions(): HotelInterface[] {
+        return this.hotelOptionList;
+    }
+
+    getHotelOptionById(id: number): HotelInterface | undefined {
+        return this.hotelOptionList.find((hotelOption) => hotelOption.id === id)
     }
 }

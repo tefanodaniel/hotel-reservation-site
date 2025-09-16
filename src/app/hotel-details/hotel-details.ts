@@ -3,6 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { HotelInterface } from '../hotel-interface';
 import { HotelService } from '../hotel-service';
+import { ImageService } from '../image-service';
 import { NewHotelInterface } from '../new-hotel-interface';
 import { ReservationService } from '../reservation-service';
 
@@ -12,14 +13,13 @@ import { ReservationService } from '../reservation-service';
   template: `
     <article>
       
-    <!-->
       <img
         class="hotel-photo"
-        [src]="hotelOption?.photo"
-        alt="Exterior photo of {{ hotelOption?.name }}"
+        [src]="photoUrl"
+        alt="Exterior photo of {{ hotelOption?.hotel_name }}"
         crossorigin
       /> 
-      -->
+      
       
       <section class="hotel-description">
         <h2 class="hotel-heading">{{ hotelOption?.hotel_name }}</h2>
@@ -55,7 +55,9 @@ export class HotelDetails {
     route: ActivatedRoute = inject(ActivatedRoute);
     hotelService = inject(HotelService);
     reservationService = inject(ReservationService);
+    imageService = inject(ImageService);
     hotelOption: NewHotelInterface | undefined;
+    photoUrl: string | undefined;
 
     reservationForm = new FormGroup({
         firstName: new FormControl(''),
@@ -64,11 +66,18 @@ export class HotelDetails {
     });
 
     constructor() {
+        
+    }
+
+    async ngOnInit() {
         const hotelId = Number(this.route.snapshot.params['id']);
         this.hotelService.getNewHotelOptionById(hotelId)
-            .then((hotelOption: NewHotelInterface | undefined ) => {
+            .then((hotelOption: NewHotelInterface | undefined) => {
                 this.hotelOption = hotelOption;
             });
+
+        const urls = await this.imageService.getHotelImagesUrls(hotelId);
+        this.photoUrl = urls[0] ?? "";
     }
 
     submitReservation() {

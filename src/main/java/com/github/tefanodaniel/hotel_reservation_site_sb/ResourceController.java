@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequestMapping("/resources")
 public class ResourceController {
 
-    ImageRepository imageRepository;
+    private final ImageRepository imageRepository;
     
     public ResourceController(ImageRepository imageRepository) {
         this.imageRepository = imageRepository;
@@ -46,11 +46,11 @@ public class ResourceController {
         return "";
     }
     
-    @GetMapping("hotel/{id}/images")
+    @GetMapping("hotel-{id}/images")
     public ResponseEntity<String> getHotelImageList(@PathVariable Long id) {
         
         List<String> image_ids = new ArrayList<>();
-        for (Image im : imageRepository.findByHotelId(id))
+        for (Image im : this.imageRepository.findByHotelId(id))
         {
             image_ids.add(im.photos_id.toString());
         }
@@ -61,7 +61,7 @@ public class ResourceController {
     }
     
 
-    @GetMapping("image/hotel-{id}")
+    @GetMapping("images/{id}")
     public ResponseEntity<byte[]> getHotelImage(@PathVariable Long id) throws IOException {
         
         // Load the image from the resources folder
